@@ -89,6 +89,17 @@ private:
 	float mPreviousSample = 0.0f;
 	float mCoef = 0.0f;
 };
+
+class FSamphold
+{
+public:
+	void Init();
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputSampholdPhasor, const int32 InNumSamples);
+private:
+	float mHeldSample = 0.0f;
+	float mPreviousPhasorValue = 0.0f;
+};
+
 class FSine
 {
 public:

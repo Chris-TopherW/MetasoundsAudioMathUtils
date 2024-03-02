@@ -127,6 +127,23 @@ void FRZero::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const i
 		mPreviousSample = OutBuffer[Index];
 	}
 }
+
+void FSamphold::Init() {}
+
+void FSamphold::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputSampholdPhasor, const int32 InNumSamples)
+{
+	for (int32 Index = 0; Index < InNumSamples; ++Index)
+	{
+		if (InputSampholdPhasor[Index] < mPreviousPhasorValue)
+		{
+			mHeldSample = InBuffer[Index];
+		}
+
+		OutBuffer[Index] = mHeldSample;
+		mPreviousPhasorValue = InputSampholdPhasor[Index];
+	}
+}
+
 void FSine::Init() {}
 
 void FSine::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
