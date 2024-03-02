@@ -68,6 +68,27 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputPowerOf, const int32 InNumSamples);
 };
 
+class FRawFIR
+{
+public:
+	void Init();
+	void SetCoef(const float coef);
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
+private:
+	float mPreviousSample = 0.0f;
+	float mCoef = 0.0f;
+};
+
+class FRZero
+{
+public:
+	void Init();
+	void SetCoef(const float coef);
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
+private:
+	float mPreviousSample = 0.0f;
+	float mCoef = 0.0f;
+};
 class FSine
 {
 public:
