@@ -47,6 +47,23 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGreaterThanComparator, const int32 InNumSamples);
 };
 
+class FInterpToAudio
+{
+public:
+	void Init(float sampleRate);
+	void SetTargetValue(const float coef);
+	void SetInterpTime(const float time);
+	void ProcessAudioBuffer(float* OutBuffer, const int32 InNumSamples);
+
+private:
+	float mTargetValue = 0.0f;
+	float mLerpProgress = 0.0f;
+	int mSamplesInLerp = 0;
+	float mLerpStartValue = 0.0f;
+	float currentValue = 0.0f;
+	float mSampleRate = 0.0f;
+};
+
 class FLessThan
 {
 public:
