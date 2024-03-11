@@ -2,6 +2,8 @@
 #include "MetasoundEnumRegistrationMacro.h"
 #include "MetasoundParamHelper.h"
 
+#pragma once
+
 namespace Metasound
 {
 	//------------------------------------------------------------------------------------
