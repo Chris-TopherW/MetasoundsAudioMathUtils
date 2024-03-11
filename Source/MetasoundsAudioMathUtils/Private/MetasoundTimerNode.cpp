@@ -62,22 +62,13 @@ void FTimerNodeOperator::Execute()
 		[&](int32 StartFrame, int32 EndFrame)
 		{
 			mSampsSinceLastTrigger += EndFrame - StartFrame;
-			//if (GEngine)
-			//{
-			//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "start fame = " + FString::FromInt(StartFrame));
-			//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(EndFrame));
-			//}
-
 		},
 		[this](int32 StartFrame, int32 EndFrame)
 		{
 			TriggerOut->TriggerFrame(StartFrame);
 			float NewTimeSeconds = ((float)mSampsSinceLastTrigger + (float)StartFrame) / (float)SampleRate;
 			*mTimeSeconds = FTime(NewTimeSeconds);
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "mSampsSinceLastTrigger = " + FString::SanitizeFloat(NewTimeSeconds));
-			}
+
 			mSampsSinceLastTrigger = 0;
 			mSampsSinceLastTrigger += EndFrame - StartFrame;
 		}
