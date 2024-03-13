@@ -186,15 +186,7 @@ float sWrap(float input)
 {
 	while (input < -1.0f || input > 1.0f)
 	{
-		if (input > 2.0f)
-		{
-			input += input * -1.0f + 1.0f;
-		}
-		else if (input < -2.0f)
-		{
-			input += input * -1.0f - 1.0f;
-		}
-		else if (input > 1.0f)
+		if (input > 1.0f)
 		{
 			input += ((input - 1.0) * -1.0f) * 2.0f;
 		}
