@@ -4,15 +4,10 @@
 #include "AudioUtils.h"
 #include "Math/UnrealMathUtility.h"
 
-AudioUtils::AudioUtils()
-{
-}
-
-AudioUtils::~AudioUtils()
-{
-}
-
 namespace DSPProcessing
+{
+
+
 {
 
 void FCos::Init() {}
