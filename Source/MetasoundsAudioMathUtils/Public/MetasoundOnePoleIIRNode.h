@@ -2,21 +2,19 @@
 #include "MetasoundEnumRegistrationMacro.h"
 #include "MetasoundParamHelper.h"
 
-#pragma once
-
 namespace Metasound
 {
 	//------------------------------------------------------------------------------------
-	// FRZeroOperator
+	// FOnePoleIIROperator
 	//------------------------------------------------------------------------------------
-	class FRZeroOperator : public TExecutableOperator<FRZeroOperator>
+	class FOnePoleIIROperator : public TExecutableOperator<FOnePoleIIROperator>
 	{
 	public:
 		static const FNodeClassMetadata& GetNodeInfo();
 		static const FVertexInterface& GetVertexInterface();
 		static TUniquePtr<IOperator> CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors);
 
-		FRZeroOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput, const FFloatReadRef& InAmplitude);
+		FOnePoleIIROperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput, const FAudioBufferReadRef& InCoefficientA, const FAudioBufferReadRef& InCoefficientB);
 
 		virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
 		virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
@@ -25,22 +23,22 @@ namespace Metasound
 
 	private:
 		FAudioBufferReadRef	 AudioInput;
+		FAudioBufferReadRef	 mCoefficientA;
+		FAudioBufferReadRef	 mCoefficientB;
 		FAudioBufferWriteRef AudioOutput;
 
-		DSPProcessing::FRZero RZeroDSPProcessor;
-
-		FFloatReadRef mCoefficient;
+		DSPProcessing::FOnePoleIIR OnePoleIIRDSPProcessor;
 	};
 
 	//------------------------------------------------------------------------------------
-	// FRZeroNode
+	// FOnePoleIIRNode
 	//------------------------------------------------------------------------------------
-	class FRZeroNode : public FNodeFacade
+	class FOnePoleIIRNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.
-		FRZeroNode(const FNodeInitData& InitData)
-			: FNodeFacade(InitData.InstanceName, InitData.InstanceID, TFacadeOperatorClass<FRZeroOperator>())
+		FOnePoleIIRNode(const FNodeInitData& InitData)
+			: FNodeFacade(InitData.InstanceName, InitData.InstanceID, TFacadeOperatorClass<FOnePoleIIROperator>())
 		{
 
 		}

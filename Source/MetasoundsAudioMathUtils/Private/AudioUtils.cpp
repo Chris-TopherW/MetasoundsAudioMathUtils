@@ -129,36 +129,25 @@ void FPow::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const flo
 	}
 }
 
-// this is actually an IIR! Whoops
-void FRawFIR::Init() {}
+void FOnePoleIIR::Init() {}
 
-void FRawFIR::SetCoef(const float InAmount)
-{
-	mCoef = InAmount;
-}
-
-void FRawFIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
+void FOnePoleIIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
 	{
-		OutBuffer[Index] = InBuffer[Index] + mCoef * mPreviousSample;
+		OutBuffer[Index] = InBuffer[Index] * coefB[Index] + mPreviousSample * coefA[Index];
 		mPreviousSample = OutBuffer[Index];
 	}
 }
 
-void FRZero::Init() {}
+void FOnePoleFIR::Init() {}
 
-void FRZero::SetCoef(const float InAmount)
-{
-	mCoef = InAmount;
-}
-
-void FRZero::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
+void FOnePoleFIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
 	{
-		OutBuffer[Index] = InBuffer[Index] - mCoef * mPreviousSample;
-		mPreviousSample = OutBuffer[Index];
+		OutBuffer[Index] = InBuffer[Index] * coefB[Index] + mPreviousInputSample * coefA[Index];
+		mPreviousInputSample = InBuffer[Index];
 	}
 }
 

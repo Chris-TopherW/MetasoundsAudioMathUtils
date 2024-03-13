@@ -85,26 +85,22 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputPowerOf, const int32 InNumSamples);
 };
 
-class FRawFIR
+class FOnePoleIIR
 {
 public:
 	void Init();
-	void SetCoef(const float coef);
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples);
 private:
 	float mPreviousSample = 0.0f;
-	float mCoef = 0.0f;
 };
 
-class FRZero
+class FOnePoleFIR
 {
 public:
 	void Init();
-	void SetCoef(const float coef);
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples);
 private:
-	float mPreviousSample = 0.0f;
-	float mCoef = 0.0f;
+	float mPreviousInputSample = 0.0f;
 };
 
 class FSamphold
