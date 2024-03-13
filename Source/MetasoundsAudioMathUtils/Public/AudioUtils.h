@@ -120,13 +120,6 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
-class FMinus
-{
-public:
-	void Init();
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputMinus, const int32 InNumSamples);
-};
-
 class FSqrt
 {
 public:

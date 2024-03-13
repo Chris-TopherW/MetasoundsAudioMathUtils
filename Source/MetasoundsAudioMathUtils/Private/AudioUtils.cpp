@@ -177,16 +177,6 @@ void FSine::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const in
 	}
 }
 
-void FMinus::Init() {}
-
-void FMinus::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputMinus, const int32 InNumSamples)
-{
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
-	{
-		OutBuffer[Index] = InBuffer[Index] - InputMinus[Index];
-	}
-}
-
 void FSqrt::Init() {}
 
 void FSqrt::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
