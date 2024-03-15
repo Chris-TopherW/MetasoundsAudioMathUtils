@@ -5,17 +5,9 @@
 #include "CoreMinimal.h"
 #include "HAL/Platform.h"
 
-/**
- * 
- */
-class METASOUNDSAUDIOMATHUTILS_API AudioUtils
-{
-public:
-	AudioUtils();
-	~AudioUtils();
-};
-
 namespace DSPProcessing
+{
+
 {
 
 class FCos
