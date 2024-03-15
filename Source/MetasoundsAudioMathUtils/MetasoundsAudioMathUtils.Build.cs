@@ -1,5 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
+ 
 using UnrealBuildTool;
 
 public class MetasoundsAudioMathUtils : ModuleRules
@@ -10,15 +10,12 @@ public class MetasoundsAudioMathUtils : ModuleRules
 		
 		PublicIncludePaths.AddRange(
 			new string[] {
-				"MetasoundsAudioMathUtils/Public"
 				// ... add public include paths required here ...
 			}
-			);
-				
+			);	
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
-                "MetasoundsAudioMathUtils/Private"
 				// ... add other private include paths required here ...
 			}
 			);
@@ -31,6 +28,8 @@ public class MetasoundsAudioMathUtils : ModuleRules
 				"Core",
                 "MetasoundFrontend",
                 "MetasoundGraphCore",
+                "AudioExtensions",
+                "Serialization",
             }
             );
 
