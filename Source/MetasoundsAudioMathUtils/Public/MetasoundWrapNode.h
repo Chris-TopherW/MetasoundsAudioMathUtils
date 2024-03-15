@@ -32,7 +32,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FWrapNode
 	//------------------------------------------------------------------------------------
-	class FWrapNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FWrapNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

@@ -34,7 +34,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FGateNode
 	//------------------------------------------------------------------------------------
-	class FGateNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FGateNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

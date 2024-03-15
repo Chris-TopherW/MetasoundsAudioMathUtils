@@ -34,7 +34,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FEqualsNode
 	//------------------------------------------------------------------------------------
-	class FEqualsNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FEqualsNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

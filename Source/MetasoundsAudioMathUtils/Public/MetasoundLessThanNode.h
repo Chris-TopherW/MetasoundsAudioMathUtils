@@ -34,7 +34,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FLessThanNode
 	//------------------------------------------------------------------------------------
-	class FLessThanNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FLessThanNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

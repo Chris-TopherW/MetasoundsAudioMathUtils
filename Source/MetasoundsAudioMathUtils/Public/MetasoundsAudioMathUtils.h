@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FMetasoundsAudioMathUtilsModule : public IModuleInterface
+class METASOUNDSAUDIOMATHUTILS_API FMetasoundsAudioMathUtilsModule : public IModuleInterface
 {
 public:
 

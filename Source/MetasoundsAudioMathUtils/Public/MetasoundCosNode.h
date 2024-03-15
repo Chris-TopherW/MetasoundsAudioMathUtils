@@ -32,7 +32,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FCosNode
 	//------------------------------------------------------------------------------------
-	class FCosNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FCosNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

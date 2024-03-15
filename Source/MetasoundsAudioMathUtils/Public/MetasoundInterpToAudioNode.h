@@ -33,7 +33,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FInterpToAudioNode
 	//------------------------------------------------------------------------------------
-	class FInterpToAudioNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FInterpToAudioNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

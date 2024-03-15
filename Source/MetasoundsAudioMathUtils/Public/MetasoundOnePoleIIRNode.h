@@ -33,7 +33,7 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FOnePoleIIRNode
 	//------------------------------------------------------------------------------------
-	class FOnePoleIIRNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FOnePoleIIRNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.

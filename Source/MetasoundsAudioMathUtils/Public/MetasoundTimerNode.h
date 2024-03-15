@@ -43,7 +43,7 @@ private:
 	long mSampsSinceLastTrigger;
 };
 
-class FTimerNode : public FNodeFacade
+class METASOUNDSAUDIOMATHUTILS_API FTimerNode : public FNodeFacade
 {
 public:
 	FTimerNode(const FNodeInitData& InInitData)
