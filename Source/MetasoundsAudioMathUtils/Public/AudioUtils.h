@@ -8,7 +8,18 @@
 namespace DSPProcessing
 {
 
+class FCompare
 {
+public:
+	void Init() {}
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputEqualsComparator, std::function<float(float, float)>& comparator, const int32 InNumSamples)
+	{
+		for (int32 Index = 0; Index < InNumSamples; ++Index)
+		{
+			OutBuffer[Index] = comparator(InBuffer[Index], InputEqualsComparator[Index]);
+		}
+	}
+};
 
 class FCos
 {
