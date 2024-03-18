@@ -43,14 +43,8 @@ public:
 private:
 	FAudioBufferReadRef	 AudioInput;
 	FAudioBufferWriteRef AudioOutput;
-
 	FAudioBufferReadRef	 mInCompareComparator;
 	FEnumAudioCompareTypeReadRef mComparisonType;
-
-	DSPProcessing::FCompare CompareDSPProcessor;
-
-	TFunction<void(float*, float*)> mComparatorFunction;
-
 };
 
 //------------------------------------------------------------------------------------

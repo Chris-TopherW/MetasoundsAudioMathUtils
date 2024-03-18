@@ -8,19 +8,6 @@
 namespace DSPProcessing
 {
 
-class FCompare
-{
-public:
-	void Init() {}
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputEqualsComparator, std::function<float(float, float)>& comparator, const int32 InNumSamples)
-	{
-		for (int32 Index = 0; Index < InNumSamples; ++Index)
-		{
-			OutBuffer[Index] = comparator(InBuffer[Index], InputEqualsComparator[Index]);
-		}
-	}
-};
-
 class FCos
 {
 public:
@@ -28,26 +15,11 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
-
-class FEquals
-{
-public:
-	void Init();
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputEqualsComparator, const int32 InNumSamples);
-};
-
 class FGate
 {
 public:
 	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples);
-};
-
-class FGreaterThan
-{
-public:
-	void Init();
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGreaterThanComparator, const int32 InNumSamples);
 };
 
 class FInterpToAudio
@@ -65,20 +37,6 @@ private:
 	float mLerpStartValue = 0.0f;
 	float currentValue = 0.0f;
 	float mSampleRate = 0.0f;
-};
-
-class FLessThan
-{
-public:
-	void Init();
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputLessThanComparator, const int32 InNumSamples);
-};
-
-class FNotEquals
-{
-public:
-	void Init();
-	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputNotEqualsComparator, const int32 InNumSamples);
 };
 
 class FPow

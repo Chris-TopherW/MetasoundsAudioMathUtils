@@ -17,16 +17,6 @@ void FCos::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int
 	}
 }
 
-void FEquals::Init() {}
-
-void FEquals::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputEqualsComparator, const int32 InNumSamples)
-{
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
-	{
-		OutBuffer[Index] = InBuffer[Index] == InputEqualsComparator[Index] ? 1.0f : 0.0f;
-	}
-}
-
 void FGate::Init() {}
 
 void FGate::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples)
@@ -34,16 +24,6 @@ void FGate::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const fl
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
 	{
 		OutBuffer[Index] = FMath::RoundHalfFromZero(InputGateToggle[Index]) != 0.0f ? InBuffer[Index] : 0.0f;
-	}
-}
-
-void FGreaterThan::Init() {}
-
-void FGreaterThan::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGreaterThanComparator, const int32 InNumSamples)
-{
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
-	{
-		OutBuffer[Index] = InBuffer[Index] > InputGreaterThanComparator[Index] ? 1.0f : 0.0f;
 	}
 }
 
@@ -78,26 +58,6 @@ void FInterpToAudio::ProcessAudioBuffer(float* OutBuffer, const int32 InNumSampl
 			OutBuffer[Index] = currentValue;
 			mLerpProgress += 1.0f / static_cast<float>(mSamplesInLerp);
 		}
-	}
-}
-
-void FLessThan::Init() {}
-
-void FLessThan::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputLessThanComparator, const int32 InNumSamples)
-{
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
-	{
-		OutBuffer[Index] = InBuffer[Index] < InputLessThanComparator[Index] ? 1.0f : 0.0f;
-	}
-}
-
-void FNotEquals::Init() {}
-
-void FNotEquals::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputNotEqualsComparator, const int32 InNumSamples)
-{
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
-	{
-		OutBuffer[Index] = InBuffer[Index] != InputNotEqualsComparator[Index] ? 1.0f : 0.0f;
 	}
 }
 
