@@ -33,12 +33,10 @@ public:
 	virtual FDataReferenceCollection GetOutputs() const override;
 
 	void Execute();
-	void Reset(const IOperator::FResetParams& InParams);
 
 private:
 	float SampleRate;
 	FTriggerReadRef TriggerIn;
-	FTriggerWriteRef TriggerOut;
 	FTimeWriteRef mTimeSeconds;
 	long mSampsSinceLastTrigger;
 };

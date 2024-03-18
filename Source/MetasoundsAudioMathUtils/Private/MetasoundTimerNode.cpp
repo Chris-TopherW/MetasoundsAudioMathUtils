@@ -12,13 +12,11 @@ namespace TimerNode
 {
 METASOUND_PARAM(InputInTimerNode, "In", "Input trigger which outputs time since last trigger.");
 METASOUND_PARAM(OutputTimeOnTrigger, "Out", "The time between triggers.");
-METASOUND_PARAM(OutputOnTrigger, "Out", "Trigger out on trigger in.");
 } // namespace TimerNodeVertexNames
 
 FTimerNodeOperator::FTimerNodeOperator(const FOperatorSettings& InSettings, const FCreateOperatorParams& InParams, const FTriggerReadRef& InTriggerIn)
 	: SampleRate(InSettings.GetSampleRate())
 	, TriggerIn(InTriggerIn)
-	, TriggerOut(FTriggerWriteRef::CreateNew(InSettings))
 	, mTimeSeconds(TDataWriteReferenceFactory<FTime>::CreateExplicitArgs(InParams.OperatorSettings))
 {
 }
@@ -32,7 +30,6 @@ void FTimerNodeOperator::BindInputs(FInputVertexInterfaceData& InOutVertexData)
 void FTimerNodeOperator::BindOutputs(FOutputVertexInterfaceData& InOutVertexData)
 {
 	using namespace TimerNode;
-	//InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(OutputOnTrigger), TriggerOut);
 	InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(OutputTimeOnTrigger), mTimeSeconds);
 }
 
@@ -54,8 +51,6 @@ FDataReferenceCollection FTimerNodeOperator::GetOutputs() const
 
 void FTimerNodeOperator::Execute()
 {
-	// Advance internal counter to get rid of old triggers.
-	TriggerOut->AdvanceBlock();
 
 
 	TriggerIn->ExecuteBlock(
@@ -65,7 +60,6 @@ void FTimerNodeOperator::Execute()
 		},
 		[this](int32 StartFrame, int32 EndFrame)
 		{
-			TriggerOut->TriggerFrame(StartFrame);
 			float NewTimeSeconds = ((float)mSampsSinceLastTrigger + (float)StartFrame) / (float)SampleRate;
 			*mTimeSeconds = FTime(NewTimeSeconds);
 
@@ -73,11 +67,6 @@ void FTimerNodeOperator::Execute()
 			mSampsSinceLastTrigger += EndFrame - StartFrame;
 		}
 	);
-}
-
-void FTimerNodeOperator::Reset(const IOperator::FResetParams& InParams)
-{
-	TriggerOut->Reset();
 }
 
 TUniquePtr<IOperator> FTimerNodeOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
@@ -100,7 +89,6 @@ const FVertexInterface& FTimerNodeOperator::GetVertexInterface()
 			TInputDataVertex<FTrigger>(METASOUND_GET_PARAM_NAME_AND_METADATA(InputInTimerNode))
 		),
 		FOutputVertexInterface(
-			//TOutputDataVertex<FTrigger>(METASOUND_GET_PARAM_NAME_AND_METADATA(OutputOnTrigger)),
 			TOutputDataVertex<FTime>(METASOUND_GET_PARAM_NAME_AND_METADATA(OutputTimeOnTrigger))
 		)
 	);
