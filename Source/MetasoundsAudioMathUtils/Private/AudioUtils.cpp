@@ -44,9 +44,9 @@ void FInterpToAudio::SetInterpTime(const float time)
 	mSamplesInLerp = static_cast<int>(time * mSampleRate);
 }
 
-void FInterpToAudio::ProcessAudioBuffer(float* OutBuffer, const int32 InNumSamples)
+void FInterpToAudio::ProcessAudioBuffer(float* OutBuffer, const int32 startFrame, const int32 endFrame)
 {
-	for (int32 Index = 0; Index < InNumSamples; ++Index)
+	for (int32 Index = startFrame; Index < endFrame; ++Index)
 	{
 		if (mLerpProgress >= 1.0f)
 		{

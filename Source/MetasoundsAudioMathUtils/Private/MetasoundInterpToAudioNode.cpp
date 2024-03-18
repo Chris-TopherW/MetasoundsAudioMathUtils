@@ -10,7 +10,8 @@ namespace Metasound
 	namespace InterpToAudioNode
 	{
 		// Input params
-		METASOUND_PARAM(InParamNameTargetValue, "Target", "Target Value.")
+		METASOUND_PARAM(InputInTrigger, "Trigger", "Input trigger which starts interpolation.");
+			METASOUND_PARAM(InParamNameTargetValue, "Target", "Target Value.")
 			METASOUND_PARAM(InParamNameTimeForInterpolation, "Time", "The amount of time for the interpolation.")
 
 			// Output params
@@ -20,8 +21,9 @@ namespace Metasound
 	//------------------------------------------------------------------------------------
 	// FInterpToAudioOperator
 	//------------------------------------------------------------------------------------
-	FInterpToAudioOperator::FInterpToAudioOperator(const FOperatorSettings& InSettings, const FFloatReadRef& targetValue, const FTimeReadRef& timeForInterpolation)
+	FInterpToAudioOperator::FInterpToAudioOperator(const FOperatorSettings& InSettings, const FTriggerReadRef& InTriggerIn, const FFloatReadRef& targetValue, const FTimeReadRef& timeForInterpolation)
 		: AudioOutput(FAudioBufferWriteRef::CreateNew(InSettings))
+		, mTriggerIn(mTriggerIn)
 		, mTargetValue(targetValue)
 		, mTimeForInterpolation(timeForInterpolation)
 	{
@@ -56,6 +58,7 @@ namespace Metasound
 	{
 		using namespace InterpToAudioNode;
 
+		InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(InputInTrigger), mTriggerIn);
 		InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(InParamNameTargetValue), mTargetValue);
 		InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(InParamNameTimeForInterpolation), mTimeForInterpolation);
 	}
@@ -73,6 +76,7 @@ namespace Metasound
 
 		static const FVertexInterface Interface(
 			FInputVertexInterface(
+				TInputDataVertex<FTrigger>(METASOUND_GET_PARAM_NAME_AND_METADATA(InputInTrigger)),
 				TInputDataVertex<float>(METASOUND_GET_PARAM_NAME_AND_METADATA(InParamNameTargetValue), 0.0f),
 				TInputDataVertex<FTime>(METASOUND_GET_PARAM_NAME_AND_METADATA(InParamNameTimeForInterpolation), 1.0f)
 			),
@@ -90,24 +94,33 @@ namespace Metasound
 		using namespace InterpToAudioNode;
 
 		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
+		FTriggerReadRef TriggerIn = InParams.InputDataReferences.GetDataReadReferenceOrConstruct<FTrigger>(METASOUND_GET_PARAM_NAME(InputInTrigger), InParams.OperatorSettings);
 		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
 
 
 		FFloatReadRef targetValue = InputCollection.GetDataReadReferenceOrConstructWithVertexDefault<float>(InputInterface, METASOUND_GET_PARAM_NAME(InParamNameTargetValue), InParams.OperatorSettings);
 		FTimeReadRef timeForInterpolation = InputCollection.GetDataReadReferenceOrConstructWithVertexDefault<FTime>(InputInterface, METASOUND_GET_PARAM_NAME(InParamNameTimeForInterpolation), InParams.OperatorSettings);
 
-		return MakeUnique<FInterpToAudioOperator>(InParams.OperatorSettings, targetValue, timeForInterpolation);
+		return MakeUnique<FInterpToAudioOperator>(InParams.OperatorSettings, TriggerIn, targetValue, timeForInterpolation);
 	}
 
 	void FInterpToAudioOperator::Execute()
 	{
 		float* OutputAudio = AudioOutput->GetData();
 
-		const int32 NumSamples = AudioOutput->Num();
 
-		InterpToAudioDSPProcessor.SetTargetValue(*mTargetValue);
-		InterpToAudioDSPProcessor.SetInterpTime((float)mTimeForInterpolation->GetSeconds());
-		InterpToAudioDSPProcessor.ProcessAudioBuffer(OutputAudio, NumSamples);
+		mTriggerIn->ExecuteBlock(
+			[&](int32 StartFrame, int32 EndFrame)
+			{
+				InterpToAudioDSPProcessor.ProcessAudioBuffer(OutputAudio, StartFrame, EndFrame);
+			},
+			[&](int32 StartFrame, int32 EndFrame)
+			{
+				InterpToAudioDSPProcessor.SetTargetValue(*mTargetValue);
+				InterpToAudioDSPProcessor.SetInterpTime((float)mTimeForInterpolation->GetSeconds());
+				InterpToAudioDSPProcessor.ProcessAudioBuffer(OutputAudio, StartFrame, EndFrame);
+			}
+		);
 	}
 
 	METASOUND_REGISTER_NODE(FInterpToAudioNode)

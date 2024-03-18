@@ -14,7 +14,7 @@ namespace Metasound
 		static const FVertexInterface& GetVertexInterface();
 		static TUniquePtr<IOperator> CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors);
 
-		FInterpToAudioOperator(const FOperatorSettings& InSettings, const FFloatReadRef& targetValue, const FTimeReadRef& timeForInterpolation);
+		FInterpToAudioOperator(const FOperatorSettings& InSettings, const FTriggerReadRef& InTriggerIn, const FFloatReadRef& targetValue, const FTimeReadRef& timeForInterpolation);
 
 		virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
 		virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
@@ -26,6 +26,7 @@ namespace Metasound
 
 		DSPProcessing::FInterpToAudio InterpToAudioDSPProcessor;
 
+		FTriggerReadRef mTriggerIn;
 		FFloatReadRef mTargetValue;
 		FTimeReadRef mTimeForInterpolation;
 	};

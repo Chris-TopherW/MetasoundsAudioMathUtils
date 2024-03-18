@@ -28,7 +28,7 @@ public:
 	void Init(float sampleRate);
 	void SetTargetValue(const float coef);
 	void SetInterpTime(const float time);
-	void ProcessAudioBuffer(float* OutBuffer, const int32 InNumSamples);
+	void ProcessAudioBuffer(float* OutBuffer, const int32 startFrame, const int32 endFrame);
 
 private:
 	float mTargetValue = 0.0f;
