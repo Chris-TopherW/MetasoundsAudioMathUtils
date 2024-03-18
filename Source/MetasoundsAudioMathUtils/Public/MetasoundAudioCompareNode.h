@@ -49,6 +49,8 @@ private:
 
 	DSPProcessing::FCompare CompareDSPProcessor;
 
+	TFunction<void(float*, float*)> mComparatorFunction;
+
 };
 
 //------------------------------------------------------------------------------------

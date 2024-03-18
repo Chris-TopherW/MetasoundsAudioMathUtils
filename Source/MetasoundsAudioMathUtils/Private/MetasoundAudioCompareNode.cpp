@@ -120,33 +120,31 @@ namespace Metasound
 
 		const int32 NumSamples = AudioInput->Num();
 
-		std::function<float(float, float)> comparatorFunction;
-
 		switch (*mComparisonType)
 		{
 		case EAudioComparisonType::Equals:
-			comparatorFunction = [](float a, float b) 
-			{
-				return float(a == b); 
-			};
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] == InputCompareComparator[Index];
 			break;
-			case EAudioComparisonType::NotEquals:
-				comparatorFunction = [](float a, float b) {return float(a != b); };
-				break;
-			case EAudioComparisonType::LessThan:
-				comparatorFunction = [](float a, float b) {return float(a < b); };
-				break;
-			case EAudioComparisonType::GreaterThan:
-				comparatorFunction = [](float a, float b) {return float(a > b); };
-				break;
-			case EAudioComparisonType::LessThanOrEquals:
-				comparatorFunction = [](float a, float b) {return float(a <= b); };
-				break;
-			case EAudioComparisonType::GreaterThanOrEquals:
-				comparatorFunction = [](float a, float b) {return float(a >= b); };
-				break;
 
-			CompareDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, InputCompareComparator, comparatorFunction, NumSamples);
+		case EAudioComparisonType::NotEquals:
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] != InputCompareComparator[Index];
+			break;
+
+		case EAudioComparisonType::LessThan:
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] < InputCompareComparator[Index];
+			break;
+
+		case EAudioComparisonType::GreaterThan:
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] > InputCompareComparator[Index];
+			break;
+
+		case EAudioComparisonType::LessThanOrEquals:
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] <= InputCompareComparator[Index];
+			break;
+
+		case EAudioComparisonType::GreaterThanOrEquals:
+			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] >= InputCompareComparator[Index];
+			break;
 		}
 	}
 
