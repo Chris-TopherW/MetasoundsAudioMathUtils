@@ -21,7 +21,7 @@
 		{
 			"Name": "MetasoundsAudioMathUtils",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "EarliestPossible"
 		}
 	],
 	"Plugins": [
