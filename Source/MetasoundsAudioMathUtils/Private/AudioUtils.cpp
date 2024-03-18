@@ -7,9 +7,6 @@
 namespace DSPProcessing
 {
 
-
-{
-
 void FCos::Init() {}
 
 void FCos::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
