@@ -23,6 +23,12 @@ namespace DSPProcessing
 		-0.00611859f, 0.00674355 -0.00216395 -0.00382482, 0.00655771 -0.00411038 -0.00137314,  
 		0.0055295 -0.0052291, 0.000915266, 0.00390557f, -0.00549833f, 0.00277942f, 0.00196776f, -0.0049956f, 
 		0.0040394f, 0.0f };
+class FAudioDivide
+{
+public:
+	void Init();
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples);
+};
 
 class FCos
 {

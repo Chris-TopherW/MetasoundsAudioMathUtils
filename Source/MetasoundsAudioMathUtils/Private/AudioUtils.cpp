@@ -7,6 +7,17 @@
 namespace DSPProcessing
 {
 
+	void FAudioDivide::Init() {}
+
+	void FAudioDivide::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputAudioDivide, const int32 InNumSamples)
+	{
+		for (int32 Index = 0; Index < InNumSamples; ++Index)
+		{
+			// protect against divide by zero
+			OutBuffer[Index] = InputAudioDivide[Index] == 0.0f ? 0.0f : InBuffer[Index] / InputAudioDivide[Index];
+		}
+	}
+
 void FCos::Init() {}
 
 void FCos::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
