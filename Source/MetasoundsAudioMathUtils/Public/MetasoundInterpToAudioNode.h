@@ -1,3 +1,5 @@
+#pragma once
+
 #include "AudioUtils.h"
 #include "MetasoundEnumRegistrationMacro.h"
 #include "MetasoundParamHelper.h"
