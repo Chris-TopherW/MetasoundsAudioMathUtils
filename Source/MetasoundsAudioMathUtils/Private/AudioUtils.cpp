@@ -6,9 +6,6 @@
 
 namespace DSPProcessing
 {
-
-	void FAudioDivide::Init() {}
-
 	void FAudioDivide::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputAudioDivide, const int32 InNumSamples)
 	{
 		for (int32 Index = 0; Index < InNumSamples; ++Index)
@@ -18,8 +15,6 @@ namespace DSPProcessing
 		}
 	}
 
-void FCos::Init() {}
-
 void FCos::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
@@ -27,8 +22,6 @@ void FCos::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int
 		OutBuffer[Index] = FMath::Cos((2.0f * PI) * InBuffer[Index]);
 	}
 }
-
-void FGate::Init() {}
 
 void FGate::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples)
 {
@@ -72,8 +65,6 @@ void FInterpToAudio::ProcessAudioBuffer(float* OutBuffer, const int32 startFrame
 	}
 }
 
-void FPow::Init() {}
-
 void FPow::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputPowerOf, const int32 InNumSamples)
 {
 	float inVal, powVal = 0.0f;
@@ -92,8 +83,6 @@ void FPow::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const flo
 	}
 }
 
-void FOnePoleIIR::Init() {}
-
 void FOnePoleIIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
@@ -103,8 +92,6 @@ void FOnePoleIIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, co
 	}
 }
 
-void FOnePoleFIR::Init() {}
-
 void FOnePoleFIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
@@ -113,8 +100,6 @@ void FOnePoleFIR::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, co
 		mPreviousInputSample = InBuffer[Index];
 	}
 }
-
-void FSamphold::Init() {}
 
 void FSamphold::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputSampholdPhasor, const int32 InNumSamples)
 {
@@ -130,8 +115,6 @@ void FSamphold::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, cons
 	}
 }
 
-void FSine::Init() {}
-
 void FSine::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
@@ -139,8 +122,6 @@ void FSine::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const in
 		OutBuffer[Index] = FMath::Sin((2.0f * PI) * InBuffer[Index]);
 	}
 }
-
-void FSqrt::Init() {}
 
 void FSqrt::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
 {
@@ -166,8 +147,6 @@ float sWrap(float input)
 
 	return input;
 }
-
-void FWrap::Init() {}
 
 void FWrap::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
 {

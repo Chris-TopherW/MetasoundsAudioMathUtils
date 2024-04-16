@@ -26,21 +26,18 @@ namespace DSPProcessing
 class FAudioDivide
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples);
 };
 
 class FCos
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
 class FGate
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputGateToggle, const int32 InNumSamples);
 };
 
@@ -64,14 +61,12 @@ private:
 class FPow
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputPowerOf, const int32 InNumSamples);
 };
 
 class FOnePoleIIR
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples);
 private:
 	float mPreviousSample = 0.0f;
@@ -80,7 +75,6 @@ private:
 class FOnePoleFIR
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* coefA, const float* coefB, const int32 InNumSamples);
 private:
 	float mPreviousInputSample = 0.0f;
@@ -89,7 +83,6 @@ private:
 class FSamphold
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputSampholdPhasor, const int32 InNumSamples);
 private:
 	float mHeldSample = 0.0f;
@@ -99,21 +92,18 @@ private:
 class FSine
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
 class FSqrt
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
 class FWrap
 {
 public:
-	void Init();
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
