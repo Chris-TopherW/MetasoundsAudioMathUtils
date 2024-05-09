@@ -13,7 +13,6 @@ VCF = 'Voltage Controlled Filter' SVF algorithm that can work with sample rate f
 Other objects that differ from Pd:  
 Compare: an audio rate comparator object for doing ==, != etc at audio rate  
 Timer: Outputs the time between triggers  
-InterpTo: Audio rate interpolation object  
 Click: outputs a 1 sample click 'unit impulse'  
 AudioDivide: audio rate / . Divide by zero is always zero.  
 
