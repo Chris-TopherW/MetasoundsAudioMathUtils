@@ -1,5 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
 
 #include "MetasoundOnePoleFIRNode.h"
 

@@ -1,3 +1,6 @@
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
+
 #include "MetasoundPowNode.h"
 
 #define LOCTEXT_NAMESPACE "MetasoundNodeTemplate_PowNode"

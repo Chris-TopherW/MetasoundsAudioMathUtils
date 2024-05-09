@@ -1,4 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
+
+// Code based on this algorithm: https://gist.github.com/hollance/2891d89c57adc71d9560bcf0e1e55c4b
 
 #include "CytomicSVF.h"
 #include "Math/UnrealMathUtility.h"
@@ -7,19 +10,41 @@
 namespace DSPProcessing
 {
 
-void CytomicSVF::reset() noexcept
+CytomicSVF::CytomicSVF()
 {
-	ic1eq = 0.0f;
-	ic2eq = 0.0f;
+	SetLPF();
 }
 
-void CytomicSVF::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* CutoffFreq, const float* QAmount, const int32 InNumSamples) noexcept
+void CytomicSVF::SetLPF()
+{
+	m0 = 0.0f;
+	m1 = 0.0f;
+	m2 = 1.0f;
+}
+
+// currently feeding back so not exposed to MS node
+void CytomicSVF::setHPF()
+{
+	m0 = 1.0f;
+	m1 = -1.0f;
+	m2 = -1.0f;
+}
+
+void CytomicSVF::setBP()
+{
+	m0 = 0.0f;
+	m1 = 1.0f;
+	m2 = 0.0f;
+}
+
+void CytomicSVF::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* CutoffFreq, const float* QAmount, const int32 InNumSamples)
 {
 	for (int i = 0; i < InNumSamples; ++i)
 	{
 		//calc coefficients
 		g = Audio::FastTan(PI * CutoffFreq[i] / fs);
-		a1 = 1.0f / (1.0f + g * (g + 1.0f / QAmount[i]));
+		k = 1.0f / QAmount[i];
+		a1 = 1.0f / (1.0f + g * (g + k));
 		a2 = g * a1;
 		a3 = g * a2;
 
@@ -28,7 +53,8 @@ void CytomicSVF::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, con
 		float v2 = ic2eq + a2 * ic1eq + a3 * v3;
 		ic1eq = 2.0f * v1 - ic1eq;
 		ic2eq = 2.0f * v2 - ic2eq;
-		OutBuffer[i] = v2;
+
+		OutBuffer[i] = m0 * OutBuffer[i] + m1 * k * v1 + m2 * v2;
 	}
 }
 

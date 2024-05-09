@@ -3,13 +3,13 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "MetasoundsAudioMathUtils",
-	"Description": "Some handy audio rate math utilities for DSP development",
-	"Category": "Other",
+	"Description": "A collection of  audio rate math utilities for DSP development in Metasounds. These are mainly intended for prototyping use and are under MIT license, use at your own risk!",
+	"Category": "Audio",
 	"CreatedBy": "Chris Wratt",
 	"CreatedByURL": "https://wrattc.wixsite.com/chriswratt",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
+	"DocsURL": "https://github.com/Chris-TopherW/MetasoundsAudioMathUtils",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f3e310e86da44c53ad187698f6cb5db0",
+	"SupportURL": "https://wrattc.wixsite.com/chriswratt",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
@@ -21,7 +21,10 @@
 		{
 			"Name": "MetasoundsAudioMathUtils",
 			"Type": "Runtime",
-			"LoadingPhase": "EarliestPossible"
+			"LoadingPhase": "EarliestPossible",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		}
 	],
 	"Plugins": [

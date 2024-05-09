@@ -1,3 +1,6 @@
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
+
 #include "MetasoundAudioCompareNode.h"
 
 #define LOCTEXT_NAMESPACE "MetasoundNodeTemplate_AudioCompareNode"
@@ -19,10 +22,10 @@ namespace Metasound
 		// Input params
 		METASOUND_PARAM(InParamNameAudioInput, "In", "Audio input.")
 			METASOUND_PARAM(InParamNameCompareComparator, "Compare", "The value to test the input against")
+			METASOUND_PARAM(InputCompareType, "Type", "How to compare A and B.");
 
 			// Output params
 			METASOUND_PARAM(OutParamNameAudio, "Out", "Audio output.")
-			METASOUND_PARAM(InputCompareType, "Type", "How to compare A and B.");
 	}
 
 	//------------------------------------------------------------------------------------

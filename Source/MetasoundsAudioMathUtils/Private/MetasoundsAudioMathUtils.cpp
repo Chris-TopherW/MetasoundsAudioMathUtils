@@ -1,4 +1,5 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
 
 #include "MetasoundsAudioMathUtils.h"
 #include "MetasoundFrontendRegistries.h"

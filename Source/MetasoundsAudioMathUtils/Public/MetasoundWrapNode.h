@@ -1,3 +1,6 @@
+// Copyright Christopher Wratt 2024.
+// All code under MIT license: see https://mit-license.org/
+
 #pragma once
 
 #include "AudioUtils.h"
