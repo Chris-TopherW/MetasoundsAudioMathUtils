@@ -16,7 +16,8 @@ Timer: Outputs the time between triggers
 Click: outputs a 1 sample click 'unit impulse'  
 AudioDivide: audio rate / . Divide by zero is always zero.  
 
-Note this repo contains no binaries, Win64 binary downloads can be found here: https://drive.google.com/drive/folders/1TJ3VeyfMrBBq0pOH1HmXQ_c73ePaErq9?usp=drive_link
+Note this repo contains no binaries, Up to date Win64 binary downloads can be found via the Epic Marketplace: 
+com.epicgames.launcher://ue/marketplace/product/f3e310e86da44c53ad187698f6cb5db0
 If you need platforms other than windows you'll need to edit the cs plugin config files for compliation.
 
 ![CustomMetasoundObjects](https://github.com/Chris-TopherW/MetasoundsAudioMathUtils/assets/11866314/3c56d392-a4f5-4246-ab35-d858daf23569)
