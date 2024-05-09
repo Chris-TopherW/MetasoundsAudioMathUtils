@@ -22,9 +22,7 @@
 			"Name": "MetasoundsAudioMathUtils",
 			"Type": "Runtime",
 			"LoadingPhase": "EarliestPossible",
-			"PlatformAllowList": [
-				"Win64"
-			]
+			"PlatformAllowList": ["Win64"]
 		}
 	],
 	"Plugins": [

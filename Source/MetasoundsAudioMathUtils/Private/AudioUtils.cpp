@@ -32,40 +32,6 @@ void FGate::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const fl
 	}
 }
 
-void FInterpToAudio::Init(float sampleRate) 
-{
-	mSampleRate = sampleRate;
-}
-
-void FInterpToAudio::SetTargetValue(const float targetValue)
-{
-	mTargetValue = targetValue;
-	mLerpProgress = 0.0f;
-	mLerpStartValue = currentValue;
-}
-
-void FInterpToAudio::SetInterpTime(const float time)
-{
-	mSamplesInLerp = static_cast<int>(time * mSampleRate);
-}
-
-void FInterpToAudio::ProcessAudioBuffer(float* OutBuffer, const int32 startFrame, const int32 endFrame)
-{
-	for (int32 Index = startFrame; Index < endFrame; ++Index)
-	{
-		if (mLerpProgress >= 1.0f)
-		{
-			OutBuffer[Index] = mTargetValue;
-		}
-		else
-		{
-			currentValue = FMath::Lerp(mLerpStartValue, mTargetValue, mLerpProgress);
-			OutBuffer[Index] = currentValue;
-			mLerpProgress += 1.0f / static_cast<float>(mSamplesInLerp);
-		}
-	}
-}
-
 void FPow::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float* InputPowerOf, const int32 InNumSamples)
 {
 	float inVal, powVal = 0.0f;
