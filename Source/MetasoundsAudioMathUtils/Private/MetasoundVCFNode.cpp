@@ -99,17 +99,16 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FVCFOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FVCFOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace VCFNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InVCFCutoff = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameVCFCutoff), InParams.OperatorSettings);
-		FAudioBufferReadRef InVCFQ = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameVCFQ), InParams.OperatorSettings);
-		FEnumVCFFilterTypeReadRef InFilterType = InputCollection.GetDataReadReferenceOrConstructWithVertexDefault<FEnumVCFFilterType>(InputInterface, METASOUND_GET_PARAM_NAME(InParamNameVCOFilterType), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InVCFCutoff = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameVCFCutoff), InParams.OperatorSettings);
+		FAudioBufferReadRef InVCFQ = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameVCFQ), InParams.OperatorSettings);
+		FEnumVCFFilterTypeReadRef InFilterType = InputInterface.GetOrCreateDefaultDataReadReference<FEnumVCFFilterType>(METASOUND_GET_PARAM_NAME(InParamNameVCOFilterType), InParams.OperatorSettings);
 
 
 		return MakeUnique<FVCFOperator>(InParams.OperatorSettings, AudioIn, InVCFCutoff, InVCFQ, InFilterType);
@@ -144,6 +143,12 @@ namespace Metasound
 		//	mCytomicSVF.setHPF();
 		//	break;
 		}
+	}
+
+
+	FNodeClassMetadata FVCFNode::CreateNodeClassMetadata()
+	{
+		return FVCFOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FVCFNode)

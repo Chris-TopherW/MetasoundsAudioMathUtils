@@ -85,15 +85,14 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FGateOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FGateOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace GateNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InGateToggle = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameGateToggle), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InGateToggle = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameGateToggle), InParams.OperatorSettings);
 
 
 		return MakeUnique<FGateOperator>(InParams.OperatorSettings, AudioIn, InGateToggle);
@@ -108,6 +107,12 @@ namespace Metasound
 		const int32 NumSamples = AudioInput->Num();
 
 		GateDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, InputGateToggle, NumSamples);
+	}
+
+
+	FNodeClassMetadata FGateNode::CreateNodeClassMetadata()
+	{
+		return FGateOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FGateNode)

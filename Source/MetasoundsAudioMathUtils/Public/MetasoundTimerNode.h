@@ -15,41 +15,55 @@
 #include "MetasoundOperatorInterface.h"
 #include "MetasoundPrimitives.h"
 #include "MetasoundParamHelper.h"
-
+#include "MetasoundTrigger.h"
 
 namespace Metasound
 {
 
-class FTimerNodeOperator : public TExecutableOperator<FTimerNodeOperator>
-{
-public:
-	static const FNodeClassMetadata& GetNodeInfo();
-	static const FVertexInterface& GetVertexInterface();
-	static TUniquePtr<IOperator> CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors);
-
-	FTimerNodeOperator(const FOperatorSettings& InSettings, const FCreateOperatorParams& InParams, const FTriggerReadRef& InTriggerIn);
-
-	virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
-	virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
-	virtual FDataReferenceCollection GetInputs() const override;
-	virtual FDataReferenceCollection GetOutputs() const override;
-
-	void Execute();
-
-private:
-	float SampleRate;
-	FTriggerReadRef TriggerIn;
-	FTimeWriteRef mTimeSeconds;
-	long mSampsSinceLastTrigger;
-};
-
-class METASOUNDSAUDIOMATHUTILS_API FTimerNode : public FNodeFacade
-{
-public:
-	FTimerNode(const FNodeInitData& InInitData)
-		: FNodeFacade(InInitData.InstanceName, InInitData.InstanceID, TFacadeOperatorClass<FTimerNodeOperator>())
+	//------------------------------------------------------------------------------------
+	// FTimerOperator
+	//------------------------------------------------------------------------------------
+	class FTimerOperator : public TExecutableOperator<FTimerOperator>
 	{
-	}
-};
+	public:
+		static const FNodeClassMetadata& GetNodeInfo();
+		static const FVertexInterface& GetVertexInterface();
+		static TUniquePtr<IOperator> CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors);
+
+		FTimerOperator(const FOperatorSettings& InSettings, const FBuildOperatorParams& InParams, const FTriggerReadRef& InTriggerIn);
+
+		virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
+		virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
+		virtual FDataReferenceCollection GetInputs() const override;
+		virtual FDataReferenceCollection GetOutputs() const override;
+
+		void Execute();
+
+	private:
+		float SampleRate;
+		FTriggerReadRef TriggerIn;
+		FTimeWriteRef mTimeSeconds;
+		long mSampsSinceLastTrigger;
+	};
+
+	//------------------------------------------------------------------------------------
+	// FTimerNode
+	//------------------------------------------------------------------------------------
+	class METASOUNDSAUDIOMATHUTILS_API FTimerNode : public FNodeFacade
+	{
+	public:
+		FTimerNode(const FNodeInitData& InInitData)
+			: FNodeFacade(InInitData.InstanceName, InInitData.InstanceID, TFacadeOperatorClass<FTimerOperator>())
+		{
+		}
+
+		FTimerNode(FNodeData InNodeData, TSharedRef<const FNodeClassMetadata> InClassMetadata)
+			: FNodeFacade(InNodeData, InClassMetadata, TFacadeOperatorClass<FTimerOperator>())
+		{
+
+		}
+
+		static FNodeClassMetadata CreateNodeClassMetadata();
+	};
 
 } // namespace Metasound

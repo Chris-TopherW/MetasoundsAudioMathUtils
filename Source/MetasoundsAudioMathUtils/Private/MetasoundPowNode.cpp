@@ -85,15 +85,14 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FPowOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FPowOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace PowNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InPowerOf = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNamePowerOf), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InPowerOf = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNamePowerOf), InParams.OperatorSettings);
 
 
 		return MakeUnique<FPowOperator>(InParams.OperatorSettings, AudioIn, InPowerOf);
@@ -108,6 +107,12 @@ namespace Metasound
 		const int32 NumSamples = AudioInput->Num();
 
 		PowDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, InputPowerOf, NumSamples);
+	}
+
+
+	FNodeClassMetadata FPowNode::CreateNodeClassMetadata()
+	{
+		return FPowOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FPowNode)

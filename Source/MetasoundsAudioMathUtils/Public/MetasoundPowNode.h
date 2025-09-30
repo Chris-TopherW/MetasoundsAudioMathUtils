@@ -17,7 +17,7 @@ namespace Metasound
 	public:
 		static const FNodeClassMetadata& GetNodeInfo();
 		static const FVertexInterface& GetVertexInterface();
-		static TUniquePtr<IOperator> CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors);
+		static TUniquePtr<IOperator> CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors);
 
 		FPowOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput, const FAudioBufferReadRef& InPowerOf);
 
@@ -48,5 +48,13 @@ namespace Metasound
 		{
 
 		}
+
+		FPowNode(FNodeData InNodeData, TSharedRef<const FNodeClassMetadata> InClassMetadata)
+			: FNodeFacade(InNodeData, InClassMetadata, TFacadeOperatorClass<FPowOperator>())
+		{
+
+		}
+
+		static FNodeClassMetadata CreateNodeClassMetadata();
 	};
 }

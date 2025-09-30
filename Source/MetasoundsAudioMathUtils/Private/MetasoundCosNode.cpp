@@ -79,14 +79,13 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FCosOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FCosOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace CosNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
 
 		return MakeUnique<FCosOperator>(InParams.OperatorSettings, AudioIn);
 	}
@@ -99,6 +98,12 @@ namespace Metasound
 		const int32 NumSamples = AudioInput->Num();
 
 		CosDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, NumSamples);
+	}
+
+
+	FNodeClassMetadata FCosNode::CreateNodeClassMetadata()
+	{
+		return FCosOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FCosNode)

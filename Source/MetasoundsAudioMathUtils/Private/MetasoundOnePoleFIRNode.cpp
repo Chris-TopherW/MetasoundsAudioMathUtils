@@ -89,16 +89,15 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FOnePoleFIROperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FOnePoleFIROperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace OnePoleFIRNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InCoefficientA = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCoefficientA), InParams.OperatorSettings);
-		FAudioBufferReadRef InCoefficientB = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCoefficientB), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InCoefficientA = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCoefficientA), InParams.OperatorSettings);
+		FAudioBufferReadRef InCoefficientB = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCoefficientB), InParams.OperatorSettings);
 
 		return MakeUnique<FOnePoleFIROperator>(InParams.OperatorSettings, AudioIn, InCoefficientA, InCoefficientB);
 	}
@@ -113,6 +112,12 @@ namespace Metasound
 		const int32 NumSamples = AudioInput->Num();
 
 		OnePoleFIRDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, CoefA, CoefB, NumSamples);
+	}
+
+
+	FNodeClassMetadata FOnePoleFIRNode::CreateNodeClassMetadata()
+	{
+		return FOnePoleFIROperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FOnePoleFIRNode)

@@ -14,20 +14,25 @@
 #include "MetasoundNodeRegistrationMacro.h"
 #include "MetasoundOperatorInterface.h"
 #include "MetasoundPrimitives.h"
+#include "MetasoundTrigger.h"
+#include "MetasoundAudioBuffer.h"
 #include "MetasoundParamHelper.h"
 
 
 namespace Metasound
 {
 
-	class FClickNodeOperator : public TExecutableOperator<FClickNodeOperator>
+	//------------------------------------------------------------------------------------
+	// FClickOperator
+	//------------------------------------------------------------------------------------
+	class FClickOperator : public TExecutableOperator<FClickOperator>
 	{
 	public:
 		static const FNodeClassMetadata& GetNodeInfo();
 		static const FVertexInterface& GetVertexInterface();
-		static TUniquePtr<IOperator> CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors);
+		static TUniquePtr<IOperator> CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors);
 
-		FClickNodeOperator(const FOperatorSettings& InSettings, const FCreateOperatorParams& InParams, const FTriggerReadRef& InTriggerIn);
+		FClickOperator(const FOperatorSettings& InSettings, const FTriggerReadRef& InTriggerIn);
 
 		virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
 		virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
@@ -40,13 +45,23 @@ namespace Metasound
 		FAudioBufferWriteRef AudioOutput;
 	};
 
+	//------------------------------------------------------------------------------------
+	// FClickNode
+	//------------------------------------------------------------------------------------
 	class METASOUNDSAUDIOMATHUTILS_API FClickNode : public FNodeFacade
 	{
 	public:
 		FClickNode(const FNodeInitData& InInitData)
-			: FNodeFacade(InInitData.InstanceName, InInitData.InstanceID, TFacadeOperatorClass<FClickNodeOperator>())
+			: FNodeFacade(InInitData.InstanceName, InInitData.InstanceID, TFacadeOperatorClass<FClickOperator>())
 		{
 		}
+
+		FClickNode(FNodeData InNodeData, TSharedRef<const FNodeClassMetadata> InClassMetadata)
+			: FNodeFacade(InNodeData, InClassMetadata, TFacadeOperatorClass<FClickOperator>())
+		{
+		}
+
+		static FNodeClassMetadata CreateNodeClassMetadata();
 	};
 
 } // namespace Metasound

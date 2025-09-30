@@ -15,17 +15,17 @@ namespace Metasound
 		DEFINE_METASOUND_ENUM_ENTRY(EAudioComparisonType::GreaterThan, "GreaterThanDescription", "Greater Than", "GreaterThanTT", "True if A is greater than B."),
 		DEFINE_METASOUND_ENUM_ENTRY(EAudioComparisonType::LessThanOrEquals, "LessThanOrEqualsDescription", "Less Than Or Equals", "LessThanOrEqualsTT", "True if A is less than or equal to B."),
 		DEFINE_METASOUND_ENUM_ENTRY(EAudioComparisonType::GreaterThanOrEquals, "GreaterThanOrEqualsDescription", "Greater Than Or Equals", "GreaterThanOrEqualsTT", "True if A is greater than or equal to B."),
-		DEFINE_METASOUND_ENUM_END()
+	DEFINE_METASOUND_ENUM_END()
 
 	namespace CompareNode
 	{
 		// Input params
 		METASOUND_PARAM(InParamNameAudioInput, "In", "Audio input.")
-			METASOUND_PARAM(InParamNameCompareComparator, "Compare", "The value to test the input against")
-			METASOUND_PARAM(InputCompareType, "Type", "How to compare A and B.");
+		METASOUND_PARAM(InParamNameCompareComparator, "Compare", "The value to test the input against")
+		METASOUND_PARAM(InputCompareType, "Type", "How to compare A and B.");
 
-			// Output params
-			METASOUND_PARAM(OutParamNameAudio, "Out", "Audio output.")
+		// Output params
+		METASOUND_PARAM(OutParamNameAudio, "Out", "Audio output.")
 	}
 
 	//------------------------------------------------------------------------------------
@@ -99,16 +99,15 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FCompareOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FCompareOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace CompareNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InCompareComparator = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCompareComparator), InParams.OperatorSettings);
-		FEnumAudioCompareTypeReadRef InComparison = InputCollection.GetDataReadReferenceOrConstructWithVertexDefault<FEnumAudioCompareType>(InputInterface, METASOUND_GET_PARAM_NAME(InputCompareType), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InCompareComparator = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameCompareComparator), InParams.OperatorSettings);
+		FEnumAudioCompareTypeReadRef InComparison = InputInterface.GetOrCreateDefaultDataReadReference<FEnumAudioCompareType>(METASOUND_GET_PARAM_NAME(InputCompareType), InParams.OperatorSettings);
 
 		//FCompareOperator(FEnumAudioCompareTypeReadRef&& InComparisonTypeReadRef);
 		return MakeUnique<FCompareOperator>(InParams.OperatorSettings, AudioIn, InCompareComparator, InComparison);
@@ -149,6 +148,11 @@ namespace Metasound
 			for (int32 Index = 0; Index < NumSamples; ++Index) OutputAudio[Index] = InputAudio[Index] >= InputCompareComparator[Index];
 			break;
 		}
+	}
+
+	FNodeClassMetadata FCompareNode::CreateNodeClassMetadata()
+	{
+		return FCompareOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FCompareNode)

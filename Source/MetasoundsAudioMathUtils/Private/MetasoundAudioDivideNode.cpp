@@ -85,15 +85,14 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FAudioDivideOperator::CreateOperator(const FCreateOperatorParams& InParams, FBuildErrorArray& OutErrors)
+	TUniquePtr<IOperator> FAudioDivideOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
 		using namespace AudioDivideNode;
 
-		const FDataReferenceCollection& InputCollection = InParams.InputDataReferences;
-		const FInputVertexInterface& InputInterface = GetVertexInterface().GetInputInterface();
+		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
-		FAudioBufferReadRef AudioIn = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
-		FAudioBufferReadRef InAudioDivide = InputCollection.GetDataReadReferenceOrConstruct<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioDivide), InParams.OperatorSettings);
+		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
+		FAudioBufferReadRef InAudioDivide = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioDivide), InParams.OperatorSettings);
 
 
 		return MakeUnique<FAudioDivideOperator>(InParams.OperatorSettings, AudioIn, InAudioDivide);
@@ -108,6 +107,12 @@ namespace Metasound
 		const int32 NumSamples = AudioInput->Num();
 
 		AudioDivideDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, InputAudioDivide, NumSamples);
+	}
+
+
+	FNodeClassMetadata FAudioDivideNode::CreateNodeClassMetadata()
+	{
+		return FAudioDivideOperator::GetNodeInfo();
 	}
 
 	METASOUND_REGISTER_NODE(FAudioDivideNode)
